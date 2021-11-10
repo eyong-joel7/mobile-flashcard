@@ -10,6 +10,7 @@ import {
   createPushNotification,
   schedulePushNotification,
 } from "../utils/helpers";
+import { getAllDecks, removeCard } from "../utils/api";
 
 function Completed(props) {
   return (
@@ -63,7 +64,7 @@ export default class QuizView extends Component {
     }));
   }
   goBack = () => this.props.navigation.goBack();
-  reset = () => this.setState(() => ({ taskCount: 0 }));
+  reset = () => this.setState(() => ({ taskCount: 0, score: 0 }));
   responseHandler = (response) => {
     const { taskCount, numQuestions } = this.state;
     const score =
@@ -72,8 +73,24 @@ export default class QuizView extends Component {
       this.setState((state) => ({
         taskCount: state.taskCount + 1,
         score,
+        toggled: false,
       }));
     }
+  };
+  handleDeleteCard = () => {
+    const { title: deckTitle } = this.props.route.params.deck;
+    const { taskCount: index } = this.state;
+    removeCard(deckTitle, index).then(() =>
+      getAllDecks().then((result) => {
+        const { questions } = result[deckTitle];
+        const numQuestions = questions.length;
+        result != null &&
+          this.setState(() => ({
+            questions,
+            numQuestions,
+          }));
+      })
+    );
   };
 
   render() {
@@ -122,6 +139,12 @@ export default class QuizView extends Component {
           >
             Incorrect
           </TouchableBtn>
+          <TextButton
+            style={{ fontSize: 18, padding: 10 }}
+            onPress={this.handleDeleteCard}
+          >
+            Delete Card
+          </TextButton>
         </View>
       </View>
     );

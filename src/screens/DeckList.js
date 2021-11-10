@@ -27,7 +27,7 @@ export default class DeckList extends Component {
   state = {
     selectedDeck: null,
     decks: null,
-    bounceValue: new Animated.Value(1),
+    opacityValue: new Animated.Value(1),
   };
   componentDidMount() {
     this.focusLister = this.props.navigation.addListener("focus", () =>
@@ -47,15 +47,24 @@ export default class DeckList extends Component {
   }
 
   handlePress = (deckTitle) => {
-    const { bounceValue } = this.state;
+    const { opacityValue } = this.state;
     Animated.sequence([
-      Animated.timing(bounceValue, {
+      Animated.timing(opacityValue, {
         duration: 200,
-        toValue: 1.04,
+        toValue: 0.5,
         useNativeDriver: false,
       }),
-      Animated.spring(bounceValue, { toValue: 1, friction: 4}),
-    ]).start();
+      Animated.timing(opacityValue, {
+        duration: 200,
+        toValue: 1,
+        useNativeDriver: false,
+      })
+    ]).start()
+    // Animated.timing(opacityValue, {
+    //   duration: 200,
+    //   toValue: 0.5,
+    //   useNativeDriver: false,
+    // }).start()
 
     this.setState(
       () => ({ selectedDeck: deckTitle }),
@@ -66,18 +75,16 @@ export default class DeckList extends Component {
     );
   };
   renderItem = ({ item }) => (
-    <Animated.View
-      style={
-        ([styles.items], { transform: [{ scale: this.state.bounceValue }] })
-      }
-    >
+    <View style={([styles.items])}>
+    <Animated.View style = {{opacity:this.state.opacityValue}}>
       <DeckCard
         onPress={() => this.handlePress(item.title)}
         subTitle={`${item.questions.length} Cards`}
       >
         {item.title}
       </DeckCard>
-    </Animated.View>
+      </Animated.View>
+    </View>
   );
   listData = () => {
     let dataArr = [];

@@ -11,7 +11,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { lightPurp, purple, white } from "./src/utils/color";
-import { clearLocalNotification, createPushNotification } from "./src/utils/helpers";
+import { createPushNotification } from "./src/utils/helpers";
 
 function Tabs() {
   const Tab = createBottomTabNavigator();
@@ -49,7 +49,6 @@ export default class App extends Component {
 
   componentDidMount(){
     createPushNotification();
-    // clearLocalNotification();
   }
   render() {
     const Stack = createNativeStackNavigator();

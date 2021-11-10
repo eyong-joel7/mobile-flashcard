@@ -14,7 +14,6 @@ export const getAllDecks = async () => {
 export const getDeck = async (id) => {
   try {
     const data = await AsyncStorage.getItem(DATA_STORAGE_KEY);
-
     const dataObj = data != null ? JSON.parse(data) : null;
     return dataObj != null ? dataObj[id] : null;
   } catch (e) {
@@ -33,7 +32,7 @@ export const saveDeckTitle = async (title) => {
   }
 };
 export const addCardToDeck = async (title, card) => {
-    const formattedCard = formatCard(card);
+  const formattedCard = formatCard(card);
   try {
     const result = await AsyncStorage.getItem(DATA_STORAGE_KEY);
     const data = JSON.parse(result);
@@ -57,5 +56,22 @@ export const removeDeck = async (title) => {
     await AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
   } catch (e) {
     console.log("Error", e);
+  }
+};
+
+export const removeCard = async (deckTitle, index) => {
+  try {
+    const result = await AsyncStorage.getItem(DATA_STORAGE_KEY);
+    const data = JSON.parse(result);
+    const selectedDeck = data[deckTitle];
+    const cardToDelete = selectedDeck.questions
+      ? selectedDeck.questions[index]
+      : null;
+    if (cardToDelete != null) {
+      data[deckTitle].questions.splice(index, 1);
+      await AsyncStorage.setItem(DATA_STORAGE_KEY, JSON.stringify(data));
+    }
+  } catch (e) {
+    console.log("Error deleting card", e);
   }
 };

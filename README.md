@@ -46,7 +46,13 @@ N/B Yarn is used below the equivalent npm commands will also work e.g yarn ios  
      ├── helpers.js - Here, helper functions for formatting our datbase before going to the database as well as our notification logic are resident here
 
 
-
+## Tested Platforms
+   This project has been tested and confirmed to  work any without issues on the foloowing physical devices 9 (no test has been performed on an emulator yet)
+1. Xiaomi Redmi Note 7
+2. Samsung Galaxy J6
        
 
 
+## Author 
+- [Github](https://github.com/eyong-joel7)
+- [JOEL EMOH](https://eyongjoel.netlify.app)
